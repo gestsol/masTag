@@ -125,16 +125,15 @@ export default {
   data() {
     return {
       buscar: "",
+      //filtro por defecto
       tipoFiltro: "patente",
       fechaInicio: new Date(),
       fechaFinal: new Date(),
+      //número de filas que habrá por páginas
       elementosPorPagina: 5,
+      //Numero de página inicial
       numeroPagina: 1,
-      fechita: new Date(2052, 0, 24).toLocaleDateString("es-ES", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
+      //Arreglo de donde saco los datos de prueba
       arrayReporte: [
         {
           patente: "RT-LL-90",
@@ -287,6 +286,9 @@ export default {
     };
   },
   computed: {
+    //suma de todos los montos del reporte general
+    //para que sea el monto de los datos filtrados
+    //cambiar arrayReporte por listaFiltrada
     montoTotal() {
       let monto = 0;
       this.arrayReporte.forEach((reporte) => {
@@ -294,6 +296,9 @@ export default {
       });
       return monto;
     },
+
+    //retorno el array de la lista filtrada dependiendo del
+    //filtro utilizado
     listaFiltrada() {
       return this.arrayReporte.filter((item) => {
         switch (this.tipoFiltro) {
@@ -313,9 +318,14 @@ export default {
         }
       });
     },
+
+    //calculo el número de páginas dependiendo de
+    //la cantidad de datos en el array
     totalPaginas() {
       return Math.ceil(this.listaFiltrada.length / this.elementosPorPagina);
     },
+
+    //retorno los datos paginados dependiendo de las variables señaladas en la data
     datosPaginados() {
       let primeraFila =
         this.numeroPagina * this.elementosPorPagina - this.elementosPorPagina;
@@ -324,6 +334,8 @@ export default {
     },
   },
   mounted() {
+    //Fijo las fechas de inicio y final como el primer y el último día del mes actual
+    //en el filtro por fecha
     const fechaHoy = new Date('1997', '0', '4')
     const nDiasMes = new Date(fechaHoy.getFullYear(), fechaHoy.getMonth()+1, 0).getDate()
     console.log(nDiasMes)
@@ -348,12 +360,11 @@ export default {
       '-'+ stringMesActual +
       '-' + nDiasMes;
 
-      console.log(this.fechaInicio)
-      console.log(this.fechaFinal)
-
 
   },
   watch: {
+    //cada vez que el filtro sea modificado, vuelvo a la página 1
+    //para evitar bugs como estar en la página 5 cuando solo hay 2
     buscar() {
       if (this.buscar != "") {
         this.numeroPagina = 1;

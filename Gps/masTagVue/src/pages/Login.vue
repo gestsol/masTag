@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import {  validate, clean, format, getCheckDigit } from 'rut.js'
+import { format } from 'rut.js'
 export default {
     data(){
         return{
@@ -77,6 +77,8 @@ export default {
     },
 
     methods: {
+        //leer documentación de rut.js
+        //cada vez que escribo, el rut se formatea
         formatearRut(){
             if(this.rut.length > 1)
             {
